@@ -1,21 +1,16 @@
 module vtik
 
 import net.http
-import strconv
 import x.json2
 import os
 
 struct VTik {
-	m_str_tag		string = "VTik"
+	m_str_tag string = 'VTik'
 mut:
-	m_str_title		string
+	m_str_title     string
 	m_str_base_url  string
 	m_str_json_url  string
 	m_str_video_url string
-}
-
-fn (vtik VTik) print_info(str string){
-	strconv.v_printf("[%s]: %s", vtik.m_str_tag, str)
 }
 
 pub fn new(str_url string) ?VTik {
@@ -37,8 +32,8 @@ fn (vtik VTik) is_url_shortened() bool {
 	return vtik.m_str_base_url.contains('vm.tiktok.com')
 }
 
-fn (mut vtik VTik) shortened_to_long_url() ?{
-	vtik.print_info("URL is shortened, unshortening it\n")
+fn (mut vtik VTik) shortened_to_long_url() ? {
+	println('$vtik.m_str_tag URL is shortened, unshortening it')
 
 	req := http.Request{
 		url: vtik.m_str_base_url
@@ -52,20 +47,19 @@ fn (mut vtik VTik) shortened_to_long_url() ?{
 }
 
 fn (mut vtik VTik) get_json_url() {
-	vtik.print_info("Getting JSON data URL\n")
+	println('$vtik.m_str_tag Getting JSON data URL')
 
 	str_tokens := vtik.m_str_base_url.split('/')
 	str_username := str_tokens[3]
 	str_id := str_tokens[5].split('?')[0]
 
-	vtik.m_str_json_url = strconv.v_sprintf('https://www.tiktok.com/node/share/video/%s/%s', str_username,
-		str_id)
+	vtik.m_str_json_url = 'https://www.tiktok.com/node/share/video/$str_username/$str_id'
 
 	println(vtik.m_str_json_url)
 }
 
 pub fn (mut vtik VTik) get_video_infos() ?string {
-	vtik.print_info("Getting raw video URL and title\n")
+	println('$vtik.m_str_tag Getting raw video URL and title')
 
 	res := http.get(vtik.m_str_json_url)?
 	str_raw_json := res.body
@@ -84,19 +78,16 @@ pub fn (mut vtik VTik) get_video_infos() ?string {
 }
 
 pub fn (vtik VTik) download_video(path string) ? {
-	vtik.print_info("Downloading video -> ")
 	mut path_corrected := path
 
-	if path_corrected.ends_with('/') == false{
+	if path_corrected.ends_with('/') == false {
 		path_corrected += '/'
 	}
-
-	complete_path := path_corrected+'[vtik] '+vtik.m_str_title+'.mp4'
+	complete_path := path_corrected + '[vtik] ' + vtik.m_str_title + '.mp4'
+	println('$vtik.m_str_tag Downloading video -> $complete_path')
 
 	res := http.get(vtik.m_str_video_url)?
-	
 	os.write_file_array(complete_path, res.body.bytes())?
 
-	strconv.v_printf("%s\n", complete_path)
-	vtik.print_info("Done !\n")
+	println('$vtik.m_str_tag Done !')
 }

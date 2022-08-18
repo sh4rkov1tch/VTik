@@ -42,7 +42,7 @@ fn main(){
 					str_link := vt.get_video_url()
 					bot.send_message(
 						chat_id: update.message.from.id.str()
-						text: "Your download link for $vt.get_video_title() is ready!\n$str_link"
+						text: "Your video is ready: \n[$vt.get_video_title()]\n$str_link"
 					)
 				}
 			}

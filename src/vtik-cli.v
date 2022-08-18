@@ -21,7 +21,8 @@ fn main() {
 
 	str_url := add_args[0]
 
-	vt := vtik.new(str_url) or {
+	mut vt := vtik.new() 
+	vt.set_base_url(str_url) or {
 		eprintln("[VTik] Error: $err")
 		return
 	}

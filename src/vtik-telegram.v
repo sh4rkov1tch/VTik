@@ -7,6 +7,7 @@ fn main(){
 	bot := vgram.new_bot(str_token)
 	mut updates := []vgram.Update{}
 	mut last_offset := 0
+	mut vt := vtik.new()
 
 	for{
 		updates = bot.get_updates(offset: last_offset, limit: 100)
@@ -30,14 +31,13 @@ fn main(){
 						chat_id: update.message.from.id.str()
 						action: "typing"
 					)
-
-					vt := vtik.new(update.message.text) or {
+					
+					vt.set_base_url(update.message.text) or {
 						bot.send_message(
 							chat_id: update.message.from.id.str()
 							text: "Error: $err"
 						)
 						eprintln("[VTik Telegram] Error: $err")
-						return
 					}
 
 					str_link := vt.get_video_url()

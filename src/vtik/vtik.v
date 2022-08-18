@@ -14,11 +14,14 @@ mut:
 	m_str_video_url string
 }
 
-pub fn new(str_url string) ?VTik {
-	mut vtik := VTik{
-		m_str_base_url: str_url
-	}
+pub fn new() VTik {
+	mut vtik := VTik{}
+	return vtik
+}
 
+pub fn (mut vtik VTik) set_base_url(str_url string) ?{
+	vtik.m_str_base_url = str_url
+	
 	if !vtik.is_url_valid(){
 		return error("URL is not valid")
 	}
@@ -29,8 +32,6 @@ pub fn new(str_url string) ?VTik {
 
 	vtik.get_json_url()
 	vtik.get_video_infos()?
-
-	return vtik
 }
 
 fn (vtik VTik) is_url_shortened() bool {

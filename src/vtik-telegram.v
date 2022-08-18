@@ -2,7 +2,11 @@ import v.util
 import dariotarantini.vgram
 import vtik
 fn main(){
-	str_token := util.read_file(".token")? //You'll have to provide your own telegram token for obvious reasons
+	str_token := util.read_file(".token") or { //You'll have to provide your own telegram token for obvious reasons
+		eprintln("[VTik-Telegram] Error: Token file not found.")
+		return
+	}
+
 	bot := vgram.new_bot(str_token)
 	mut updates := []vgram.Update{}
 	mut last_offset := 0

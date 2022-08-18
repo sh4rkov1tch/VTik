@@ -3,7 +3,7 @@ import dariotarantini.vgram
 
 import vtik
 fn main(){
-	str_token := util.read_file("../.token")? //You'll have to provide your own telegram token for obvious reasons
+	str_token := util.read_file(".token")? //You'll have to provide your own telegram token for obvious reasons
 	bot := vgram.new_bot(str_token)
 	mut updates := []vgram.Update{}
 	mut last_offset := 0

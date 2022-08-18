@@ -22,13 +22,13 @@ fn main() {
 	str_url := add_args[0]
 
 	vt := vtik.new(str_url) or {
-		eprintln(err)
+		eprintln("[VTik] Error: $err")
 		return
 	}
 
 	vt.download_video(str_path) or {
 		eprintln(err)
-		println("Couldn't download video")
+		println("[VTik] Error: Couldn't download video")
 		return
 	}
 }

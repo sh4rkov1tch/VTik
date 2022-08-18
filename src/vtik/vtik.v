@@ -18,12 +18,16 @@ pub fn new(str_url string) ?VTik {
 		m_str_base_url: str_url
 	}
 
+	if !vtik.is_url_valid(){
+		return error("URL is not valid")
+	}
+
 	if vtik.is_url_shortened() {
 		vtik.shortened_to_long_url()?
 	}
 
 	vtik.get_json_url()
-	vtik.m_str_video_url = vtik.get_video_infos()?
+	vtik.get_video_infos()?
 
 	return vtik
 }
@@ -58,7 +62,7 @@ fn (mut vtik VTik) get_json_url() {
 	println(vtik.m_str_json_url)
 }
 
-pub fn (mut vtik VTik) get_video_infos() ?string {
+pub fn (mut vtik VTik) get_video_infos() ? {
 	println('$vtik.m_str_tag Getting raw video URL and title')
 
 	res := http.get(vtik.m_str_json_url)?
@@ -67,14 +71,8 @@ pub fn (mut vtik VTik) get_video_infos() ?string {
 	video_json := json2.raw_decode(str_raw_json)?
 	video_map := video_json.as_map()
 
-	mut video_any := video_map['itemInfo']?
-	video_any = video_any.as_map()['itemStruct']?
-	video_any = video_any.as_map()['video']?
-
-	str_video_url := video_any.as_map()['downloadAddr']?.str()
-
+	vtik.m_str_video_url = video_map['itemInfo']?.as_map()['itemStruct']?.as_map()['video']?.as_map()['downloadAddr']?.str()
 	vtik.m_str_title = video_map['seoProps']?.as_map()['metaParams']?.as_map()['title']?.str()
-	return str_video_url
 }
 
 pub fn (vtik VTik) download_video(path string) ? {
@@ -90,4 +88,16 @@ pub fn (vtik VTik) download_video(path string) ? {
 	os.write_file_array(complete_path, res.body.bytes())?
 
 	println('$vtik.m_str_tag Done !')
+}
+
+fn (vtik VTik) is_url_valid() bool{
+	return (vtik.m_str_base_url.contains("https://www.tiktok.com/") || vtik.m_str_base_url.contains("https://vm.tiktok.com"))
+}
+
+pub fn (vtik VTik) get_video_url() string {
+	return vtik.m_str_video_url
+}
+
+pub fn (vtik VTik) get_video_title() string{
+	return vtik.m_str_title
 }

@@ -1,6 +1,7 @@
 module vtik
 
 import net.http
+import regex
 import x.json2
 import os
 
@@ -91,7 +92,10 @@ pub fn (vtik VTik) download_video(path string) ? {
 }
 
 fn (vtik VTik) is_url_valid() bool{
-	return (vtik.m_str_base_url.contains("https://www.tiktok.com/") || vtik.m_str_base_url.contains("https://vm.tiktok.com"))
+	mut reg_shortened, _, _:= regex.regex_base("https://{,1}vm.tiktok.com/[a-zA-Z]{9}")
+	mut reg_long, _, _ := regex.regex_base("https://{,1}www.tiktok.com/[@][a-zA-Z]{0,32}/video/[0-9]{19}[?]{1}.{0, 32}")
+
+	return(reg_shortened.matches_string(vtik.m_str_base_url) || reg_long.matches_string(vtik.m_str_base_url))
 }
 
 pub fn (vtik VTik) get_video_url() string {

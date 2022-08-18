@@ -36,6 +36,7 @@ fn main(){
 							chat_id: update.message.from.id.str()
 							text: "Error: $err"
 						)
+						eprintln("[VTik Telegram] Error: $err")
 						return
 					}
 

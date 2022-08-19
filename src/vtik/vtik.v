@@ -22,7 +22,7 @@ pub fn new() VTik {
 pub fn (mut vtik VTik) set_base_url(str_url string) ?{
 	vtik.m_str_base_url = str_url
 	
-	if !vtik.is_url_valid(vtik.m_str_base_url){
+	if !is_url_valid(vtik.m_str_base_url){
 		return error("URL is not valid")
 	}
 
@@ -97,7 +97,7 @@ pub fn (vtik VTik) get_video_as_bytes() ?string {
 	return res.body
 }
 
-pub fn (vtik VTik) is_url_valid(str_url string) bool{
+pub fn is_url_valid(str_url string) bool{
 	mut reg_shortened, _, _:= regex.regex_base("https\:\/\/vm\.tiktok\.com\/{1}[a-zA-Z0-9]{9}[\/]{0,1}")
 	mut reg_long, _, _ := regex.regex_base("https:\/\/www\.tiktok\.com\/[@]{1}[a-zA-Z0-9]{0,32}\/video\/[0-9]{19}[?]{1}.{0,35}")
 

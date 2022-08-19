@@ -30,7 +30,7 @@ fn main(){
 					)
 				}
 
-				if update.message.text.contains("tiktok"){
+				if vtik.is_url_valid(update.message.text){
 
 					bot.send_chat_action(
 						chat_id: update.message.from.id.str()

@@ -1,14 +1,15 @@
-import v.util
 import dariotarantini.vgram
 import vtik
-import flags
+import os
+import flag
 
 fn main(){
 	mut fp := flag.new_flag_parser(os.args)
 	fp.limit_free_args_to_exactly(1)?
-	
+	fp.skip_executable()
+
 	add_args := fp.finalize() or { //You'll have to provide your own telegram token for obvious reasons
-		eprintln("[VTik-Telegram] Error: Token file not found.")
+		eprintln("[VTik-Telegram] Error: Token not found.")
 		return
 	}
 

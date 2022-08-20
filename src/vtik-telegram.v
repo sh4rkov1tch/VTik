@@ -1,11 +1,18 @@
 import v.util
 import dariotarantini.vgram
 import vtik
+import flags
+
 fn main(){
-	str_token := util.read_file(".token") or { //You'll have to provide your own telegram token for obvious reasons
+	mut fp := flag.new_flag_parser(os.args)
+	fp.limit_free_args_to_exactly(1)?
+	
+	add_args := fp.finalize() or { //You'll have to provide your own telegram token for obvious reasons
 		eprintln("[VTik-Telegram] Error: Token file not found.")
 		return
 	}
+
+	str_token := add_args[0]
 
 	bot := vgram.new_bot(str_token)
 	mut updates := []vgram.Update{}

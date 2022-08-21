@@ -4,3 +4,5 @@ src/main.exe
 main
 main.exe
 src/.token
+src/vtik-cli
+src/vtik-telegram

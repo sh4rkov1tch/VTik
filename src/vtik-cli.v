@@ -12,7 +12,8 @@ fn main() {
 	fp.footer('The expected argument is the link of the video you want to download!')
 
 	str_path := fp.string('output', `o`, os.getwd(), 'The path where you want the video to be downloaded')
-
+	bool_thumb := fp.bool('thumbnail', `t`, false, 'If this flag is applied, only the thumbnail will be downloaded')
+	
 	add_args := fp.finalize() or {
 		eprintln(err)
 		println(fp.usage())
@@ -27,9 +28,19 @@ fn main() {
 		return
 	}
 
-	vt.download_video(str_path) or {
-		eprintln(err)
-		println("[VTik] Error: Couldn't download video")
-		return
+	if bool_thumb == true {
+		vt.save_thumbnail(str_path) or {
+			eprintln(err)
+			println("[VTik] Error: Couldn't save thumbnail")
+			return
+		}
+	}
+
+	else{
+		vt.download_video(str_path) or {
+			eprintln(err)
+			println("[VTik] Error: Couldn't download video")
+			return
+		}
 	}
 }

@@ -6,6 +6,7 @@ It's heavily inspired by [youtube-dl](https://github.com/ytdl-org/youtube-dl) bu
 It's a very simple tool to use:
 `$ ./vtik-cli -o <path> <tiktok/twitter link>`
 The file path is optional, if you don't specify any, the app will just download in your working directory
+
 If you want to download a Twitter video you'll need to provide your own bearer token, in an environment variable called `TWITTER_BEARER_TOKEN`
 
 ## Building the CLI App
@@ -17,6 +18,7 @@ The bot was built using Dario Tarantini's [vgram](https://github.com/dariotarant
 
 It requires an extra step:
 `$ v install dariotarantini.vgram`
+
 `$ v vtik-telegram.v`
 
 ## To-do:

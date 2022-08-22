@@ -1,5 +1,6 @@
 # VTik
 Command-line TikTok downloader written in V [(Official Website)](https://vlang.io)
+It's heavily inspired by [youtube-dl](https://github.com/ytdl-org/youtube-dl) but aims to be faster and simpler than youtube-dl
 
 ## Usage
 It's a very simple tool to use:

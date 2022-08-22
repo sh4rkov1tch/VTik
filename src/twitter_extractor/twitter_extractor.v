@@ -10,7 +10,7 @@ pub fn get_video_info(str_tag string, str_url string) ?(string, string, string){
 	str_tokens := str_url.split_any('/?')
 	mut str_id := str_tokens[5]
 
-	bearer_token := os.getenv_opt("BEARER_TOKEN")?
+	bearer_token := os.getenv_opt("TWITTER_BEARER_TOKEN")?
 
 	request_url := "https://api.twitter.com/1.1/statuses/show.json?id=${str_id}"
 

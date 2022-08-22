@@ -4,16 +4,11 @@ import os
 import flag
 
 fn main(){
-	mut fp := flag.new_flag_parser(os.args)
-	fp.limit_free_args_to_exactly(1)?
-	fp.skip_executable()
-
-	add_args := fp.finalize() or { //You'll have to provide your own telegram token for obvious reasons
-		eprintln("[VTik-Telegram] Error: Token not found.")
+	str_token := os.getenv_opt("TOKEN") or {
+		eprintln("[VTik] Error: $err")
+		println("Couldn't find Telegram Bot Token in env")
 		return
 	}
-
-	str_token := add_args[0]
 
 	bot := vgram.new_bot(str_token)
 	mut updates := []vgram.Update{}
@@ -37,7 +32,7 @@ fn main(){
 					)
 				}
 
-				if vtik.is_url_valid(update.message.text){
+				if vtik.check_url(update.message.text)? != 'invalid'{
 						bot.send_chat_action(
 							chat_id: update.message.from.id.str()
 							action: "typing"
@@ -48,6 +43,17 @@ fn main(){
 						bot.send_message(
 							chat_id: update.message.from.id.str()
 							text: "Your video is ready!\nTitle: [${vt.get_video_title()}]\n${vt.get_video_url()}"
+						)
+				}
+				else{
+						bot.send_chat_action(
+							chat_id: update.message.from.id.str()
+							action: "typing"
+						)
+
+						bot.send_message(
+							chat_id: update.message.from.id.str()
+							text: "The link that you've sent is invalid."
 						)
 				}
 			}

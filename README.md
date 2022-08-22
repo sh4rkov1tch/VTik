@@ -22,6 +22,8 @@ It requires an extra step:
 
 `$ v vtik-telegram.v`
 
+To use the bot you'll need to provide a Telegram bot token in the `TELEGRAM_TOKEN` environment variable
+
 ## To-do:
 - Implementing a server that handles http request containing the video link, so I can build iOS shortcuts or their Android equivalent around
 

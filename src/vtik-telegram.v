@@ -1,7 +1,6 @@
 import dariotarantini.vgram
 import vtik
 import os
-import flag
 
 fn main(){
 	str_token := os.getenv_opt("TELEGRAM_TOKEN") or {

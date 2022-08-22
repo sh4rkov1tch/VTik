@@ -17,6 +17,7 @@ Since it's a V app, building it is straightforward:
 The bot was built using Dario Tarantini's [vgram](https://github.com/dariotarantini/vgram)
 
 It requires an extra step:
+
 `$ v install dariotarantini.vgram`
 
 `$ v vtik-telegram.v`

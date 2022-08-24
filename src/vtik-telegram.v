@@ -13,6 +13,7 @@ fn main(){
 	mut updates := []vgram.Update{}
 	mut last_offset := 0
 	mut vt := vtik.new()
+	mut has_errored := false
 
 	for{
 		updates = bot.get_updates(offset: last_offset, limit: 100)
@@ -37,12 +38,21 @@ fn main(){
 							action: "typing"
 						)
 
-						vt.set_base_url(update.message.text)?
+						vt.set_base_url(update.message.text) or {
+							eprintln(err)
+							bot.send_message(chat_id: update.message.from.id.str() text: "Error: $err")
+							has_errored = true
+						}
 
-						bot.send_message(
-							chat_id: update.message.from.id.str()
-							text: "Your video is ready!\nTitle: [${vt.get_video_title()}]\n${vt.get_video_url()}"
-						)
+						if has_errored == false {
+							bot.send_message(
+								chat_id: update.message.from.id.str()
+								text: "Your video is ready!\nTitle: [${vt.get_video_title()}]\n${vt.get_video_url()}"
+							)
+						}
+						else {
+							has_errored = false
+						}
 				}
 				else{
 						bot.send_chat_action(

@@ -14,7 +14,7 @@ pub fn get_video_info(str_tag string, str_url string) ?(string, string, string){
 
 	request_url := "https://api.twitter.com/1.1/statuses/show.json?id=${str_id}"
 
-	println('${str_tag} getting JSON metadata')
+	println('${str_tag} getting JSON metadata for video $str_url')
 
 	hdr := http.new_header(key: http.CommonHeader.authorization, value: "Bearer ${bearer_token}")
 
@@ -30,6 +30,10 @@ pub fn get_video_info(str_tag string, str_url string) ?(string, string, string){
 	json_map := json.as_map()
 
 	println('${str_tag} getting title, video and thumbnail URLs')
+
+	if json_map['is_quote_status'].bool() == true {
+		return error("Cannot download quoted videos yet.")
+	}
 
 	str_title := str_id
 	str_vid_map_arr := json_map['extended_entities']?.as_map()['media']?.arr()[0]?.as_map()['video_info']?.as_map()['variants']?.arr()

@@ -31,7 +31,7 @@ pub fn get_video_info(str_tag string, str_url string) ?(string, string, string){
 
 	println('${str_tag} getting title, video and thumbnail URLs')
 
-	if json_map['is_quote_status'].bool() == true {
+	if json_map['is_quote_status']?.bool() == true {
 		return error("Cannot download quoted videos yet.")
 	}
 

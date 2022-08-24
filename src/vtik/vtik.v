@@ -91,7 +91,7 @@ pub fn (vtik VTik) save_thumbnail(path string) ? {
 pub fn check_url(str_url string) ?string{
 	mut map_regex := {
 		'tiktok_s': regex.regex_opt("https\:\/\/vm\.tiktok\.com\/{1}[a-zA-Z0-9]{9}[\/]{0,1}")?
-		'tiktok_l': regex.regex_opt("https:\/\/www\.tiktok\.com\/[@]{1}[a-zA-Z0-9_]{0,32}\/video\/[0-9]{19}[?]{1}.{0,35}")?
+		'tiktok_l': regex.regex_opt("https:\/\/www\.tiktok\.com\/[@]{1}[a-zA-Z0-9_.]{0,32}\/video\/[0-9]{19}[?]{1}.{0,40}")?
 		'twitter': regex.regex_opt("https:\/\/twitter.com\/[a-zA-Z0-9_]{0,16}\/status\/[0-9]{19}[?]{0,1}.{0,64}")?
 	}
 

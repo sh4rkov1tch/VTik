@@ -1,3 +1,5 @@
+module main
+
 import os
 import flag
 import vtik

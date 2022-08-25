@@ -1,3 +1,5 @@
+module main
+
 import dariotarantini.vgram
 import vtik
 import os

@@ -6,17 +6,17 @@ import os
 
 // Return: Video Title, Video URL, Thumbnail URL
 // You'll need to supply your own bearer token for twitter for obvious reasons too
-pub fn get_video_info(str_tag string, str_url string) ?(string, string, string){
+pub fn get_video_info(str_tag string, str_url string) ?(string, string, string) {
 	str_tokens := str_url.split_any('/?')
 	mut str_id := str_tokens[5]
 
-	bearer_token := os.getenv_opt("TWITTER_BEARER_TOKEN")?
+	bearer_token := os.getenv_opt('TWITTER_BEARER_TOKEN')?
 
-	request_url := "https://api.twitter.com/1.1/statuses/show.json?include_entities=true&id=${str_id}"
+	request_url := 'https://api.twitter.com/1.1/statuses/show.json?include_entities=true&id=$str_id'
 
-	println('${str_tag} getting JSON metadata for video $str_url')
+	println('$str_tag getting JSON metadata for video $str_url')
 
-	hdr := http.new_header(key: http.CommonHeader.authorization, value: "Bearer ${bearer_token}")
+	hdr := http.new_header(key: http.CommonHeader.authorization, value: 'Bearer $bearer_token')
 
 	req := http.Request{
 		method: http.Method.get
@@ -29,12 +29,12 @@ pub fn get_video_info(str_tag string, str_url string) ?(string, string, string){
 	json := json2.raw_decode(res.body)?
 	json_map := json.as_map()
 
-	println('${str_tag} getting title, video and thumbnail URLs')
+	println('$str_tag getting title, video and thumbnail URLs')
 
 	str_title := str_id
 	str_vid_map_arr := json_map['extended_entities']?.as_map()['media']?.arr()[0]?.as_map()['video_info']?.as_map()['variants']?.arr()
 
-	mut str_video_url := ""
+	mut str_video_url := ''
 	mut bitrate := 0
 
 	for raw_map in str_vid_map_arr {
@@ -44,14 +44,14 @@ pub fn get_video_info(str_tag string, str_url string) ?(string, string, string){
 		if str_content_type == 'video/mp4' {
 			local_bitrate := map_variant['bitrate']?.int()
 
-			if  local_bitrate > bitrate{
+			if local_bitrate > bitrate {
 				bitrate = local_bitrate
 				str_video_url = map_variant['url']?.str()
 			}
 		}
 	}
-	
+
 	str_thumb_url := json_map['entities']?.as_map()['media']?.arr()[0]?.as_map()['media_url']?.str()
-	
+
 	return str_title, str_video_url, str_thumb_url
 }

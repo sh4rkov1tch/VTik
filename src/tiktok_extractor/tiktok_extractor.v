@@ -4,10 +4,10 @@ import net.http
 import x.json2
 
 // Return: Video Title, Video URL, Thumbnail URL
-pub fn get_video_info(str_tag string, str_url string, is_shortened bool) ? (string, string, string) {
+pub fn get_video_info(str_tag string, str_url string, is_shortened bool) ?(string, string, string) {
 	mut str_base_url := str_url
 
-	if is_shortened == true{ //Shortened URL check
+	if is_shortened == true { // Shortened URL check
 		req := http.Request{
 			url: str_base_url
 			method: http.Method.get
@@ -18,7 +18,7 @@ pub fn get_video_info(str_tag string, str_url string, is_shortened bool) ? (stri
 
 		str_base_url = res.header.get_custom('Location')?
 	}
-	
+
 	str_tokens := str_base_url.split('/')
 	str_username := str_tokens[3]
 	str_id := str_tokens[5].split('?')[0]

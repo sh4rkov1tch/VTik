@@ -15,7 +15,7 @@ fn main() {
 
 	str_path := fp.string('output', `o`, os.getwd(), 'The path where you want the video to be downloaded')
 	bool_thumb := fp.bool('thumbnail', `t`, false, 'If this flag is applied, only the thumbnail will be downloaded')
-	
+
 	add_args := fp.finalize() or {
 		eprintln(err)
 		println(fp.usage())
@@ -24,9 +24,9 @@ fn main() {
 
 	str_url := add_args[0]
 
-	mut vt := vtik.new() 
+	mut vt := vtik.new()
 	vt.set_base_url(str_url) or {
-		eprintln("[VTik] Error: $err")
+		eprintln('[VTik] Error: $err')
 		return
 	}
 
@@ -36,9 +36,7 @@ fn main() {
 			println("[VTik] Error: Couldn't save thumbnail")
 			return
 		}
-	}
-
-	else{
+	} else {
 		vt.download_video(str_path) or {
 			eprintln(err)
 			println("[VTik] Error: Couldn't download video")

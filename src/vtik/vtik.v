@@ -56,10 +56,10 @@ pub fn (vtik VTik) get_thumbnail_as_bytes() ?[]u8 {
 }
 
 pub fn (vtik VTik) download_video(path string) ? {
-	mut path_corrected := path
-
-	if path_corrected.ends_with('/') == false {
-		path_corrected += '/'
+	path_corrected := if path.ends_with('/') {
+		path
+	} else {
+		path + '/'
 	}
 	complete_path := path_corrected + '[vtik] ' + vtik.m_str_title + '.mp4'
 
@@ -79,9 +79,9 @@ pub fn (vtik VTik) download_video(path string) ? {
 
 pub fn (vtik VTik) save_thumbnail(path string) ? {
 	path_corrected := if path.ends_with('/') {
-		path + '/'
-	} else {
 		path
+	} else {
+		path + '/'
 	}
 	complete_path := '$path_corrected${vtik.m_str_title}.jpg'
 

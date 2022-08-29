@@ -6,6 +6,12 @@ import os
 import tiktok_extractor
 import twitter_extractor
 
+const map_regex = {
+	'tiktok_s': regex.regex_opt('https\:\/\/vm\.tiktok\.com\/{1}[a-zA-Z0-9]{9}[\/]{0,1}')?
+	'tiktok_l': regex.regex_opt('https:\/\/www\.tiktok\.com\/@[a-zA-Z0-9._]{0,32}\/video\/[0-9]{19}[?]{0,1}.{0,40}')?
+	'twitter':  regex.regex_opt('https:\/\/twitter.com\/[a-zA-Z0-9_]{0,16}\/status\/[0-9]{19}[?]{0,1}.{0,64}')?
+}
+
 struct VTik {
 	m_str_tag string = '[VTik]'
 mut:
@@ -15,8 +21,7 @@ mut:
 }
 
 pub fn new() VTik {
-	mut vtik := VTik{}
-	return vtik
+	return VTik{}
 }
 
 pub fn (mut vtik VTik) set_base_url(str_url string) ? {
@@ -73,12 +78,12 @@ pub fn (vtik VTik) download_video(path string) ? {
 }
 
 pub fn (vtik VTik) save_thumbnail(path string) ? {
-	mut path_corrected := path
-
-	if path_corrected.ends_with('/') == false {
-		path_corrected += '/'
+	path_corrected := if path.ends_with('/') {
+		path + '/'
+	} else {
+		path
 	}
-	complete_path := path_corrected + vtik.m_str_title + '.jpg'
+	complete_path := '$path_corrected${vtik.m_str_title}.jpg'
 
 	println('$vtik.m_str_tag Saving thumbnail @ $complete_path')
 
@@ -89,20 +94,13 @@ pub fn (vtik VTik) save_thumbnail(path string) ? {
 }
 
 pub fn check_url(str_url string) ?string {
-	mut map_regex := {
-		'tiktok_s': regex.regex_opt('https\:\/\/vm\.tiktok\.com\/{1}[a-zA-Z0-9]{9}[\/]{0,1}')?
-		'tiktok_l': regex.regex_opt('https:\/\/www\.tiktok\.com\/@[a-zA-Z0-9._]{0,32}\/video\/[0-9]{19}[?]{0,1}.{0,40}')?
-		'twitter':  regex.regex_opt('https:\/\/twitter.com\/[a-zA-Z0-9_]{0,16}\/status\/[0-9]{19}[?]{0,1}.{0,64}')?
-	}
-
 	mut str_ret := 'invalid'
-	for k, mut regex in map_regex {
+	for k, mut regex in vtik.map_regex {
 		if regex.matches_string(str_url) {
 			str_ret = k
 			break
 		}
 	}
-
 	return str_ret
 }
 

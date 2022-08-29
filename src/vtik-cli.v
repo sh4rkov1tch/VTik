@@ -30,7 +30,7 @@ fn main() {
 		return
 	}
 
-	if bool_thumb == true {
+	if bool_thumb {
 		vt.save_thumbnail(str_path) or {
 			eprintln(err)
 			println("[VTik] Error: Couldn't save thumbnail")

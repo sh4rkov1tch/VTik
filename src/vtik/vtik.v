@@ -61,7 +61,7 @@ pub fn (vtik VTik) download_video(path string) ? {
 	} else {
 		path + '/'
 	}
-	complete_path := path_corrected + '[vtik] ' + vtik.m_str_title + '.mp4'
+	complete_path := '$path_corrected[vtik] ${vtik.m_str_title}.mp4'
 
 	println('$vtik.m_str_tag Downloading video @ $complete_path')
 

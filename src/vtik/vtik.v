@@ -3,8 +3,7 @@ module vtik
 import net.http
 import regex
 import os
-import tiktok_extractor
-import twitter_extractor
+import extractors
 
 struct VTik {
 	m_str_tag string = '[VTik]'
@@ -23,15 +22,15 @@ pub fn (mut vtik VTik) set_base_url(str_url string) ? {
 	str_check := check_url(str_url)?
 	match str_check {
 		'tiktok_s' {
-			vtik.m_str_title, vtik.m_str_video_url, vtik.m_str_thumb_url = tiktok_extractor.get_video_info(vtik.m_str_tag,
+			vtik.m_str_title, vtik.m_str_video_url, vtik.m_str_thumb_url = extractors.tiktok(vtik.m_str_tag,
 				str_url, true)?
 		}
 		'tiktok_l' {
-			vtik.m_str_title, vtik.m_str_video_url, vtik.m_str_thumb_url = tiktok_extractor.get_video_info(vtik.m_str_tag,
+			vtik.m_str_title, vtik.m_str_video_url, vtik.m_str_thumb_url = extractors.tiktok(vtik.m_str_tag,
 				str_url, false)?
 		}
 		'twitter' {
-			vtik.m_str_title, vtik.m_str_video_url, vtik.m_str_thumb_url = twitter_extractor.get_video_info(vtik.m_str_tag,
+			vtik.m_str_title, vtik.m_str_video_url, vtik.m_str_thumb_url = extractors.twitter(vtik.m_str_tag,
 				str_url)?
 		}
 		else {

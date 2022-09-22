@@ -9,14 +9,12 @@ import os
 pub fn tiktok(str_tag string, str_url string, is_shortened bool) ?(string, string, string) {
 	mut str_base_url := str_url
 
-	if is_shortened == true { // Shortened URL check
-		req := http.Request{
+	if is_shortened { // Shortened URL check
+		res := http.Request{
 			url: str_base_url
 			method: http.Method.get
 			allow_redirect: false
-		}
-
-		res := req.do()?
+		}.do()?
 
 		str_base_url = res.header.get_custom('Location')?
 	}

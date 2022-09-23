@@ -11,7 +11,7 @@ If you want to download a Twitter video you'll need to provide your own bearer t
 
 ## Building the CLI App
 Since it's a V app, building it is straightforward:
-`$ v vtik-cli.v`
+`$ v src/vtik-cli.v`
 
 ## Building the Telegram Bot
 The bot was built using Dario Tarantini's [vgram](https://github.com/dariotarantini/vgram)
@@ -20,7 +20,7 @@ It requires an extra step:
 
 `$ v install dariotarantini.vgram`
 
-`$ v vtik-telegram.v`
+`$ v src/vtik-telegram.v`
 
 To use the bot you'll need to provide a Telegram bot token in the `TELEGRAM_TOKEN` environment variable
 

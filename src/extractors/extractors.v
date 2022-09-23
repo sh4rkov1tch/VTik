@@ -54,13 +54,11 @@ pub fn twitter(str_tag string, str_url string) ?(string, string, string) {
 
 	hdr := http.new_header(key: http.CommonHeader.authorization, value: 'Bearer $bearer_token')
 
-	req := http.Request{
+	res := http.Request{
 		method: http.Method.get
 		header: hdr
 		url: request_url
-	}
-
-	res := req.do()?
+	}.do()?
 
 	json := json2.raw_decode(res.body)?
 	json_map := json.as_map()
@@ -91,4 +89,3 @@ pub fn twitter(str_tag string, str_url string) ?(string, string, string) {
 
 	return str_title, str_video_url, str_thumb_url
 }
-

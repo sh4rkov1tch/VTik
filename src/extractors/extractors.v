@@ -48,7 +48,7 @@ pub fn twitter(str_tag string, str_url string) ?(string, string, string) {
 
 	bearer_token := os.getenv_opt('TWITTER_BEARER_TOKEN')?
 
-	request_url := 'https://api.twitter.com/1.1/statuses/show.json?include_entities=true&id=$str_id'
+	request_url := 'https://api.twitter.com/1.1/statuses/show.json?include_entities=true&tweet_mode=extended&id=$str_id'
 
 	println('$str_tag getting JSON metadata for video $str_url')
 

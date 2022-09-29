@@ -23,7 +23,7 @@ ENV TWITTER_BEARER_TOKEN=""
 WORKDIR /opt/vtik
 
 RUN git clone https://github.com/Sharqo78/VTik
-RUN v /opt/vtik/VTik/src/vtik-telegram.v -o /opt/vtik/vtik-telegram
+RUN v /opt/vtik/VTik/src/vtik-telegram.v -o /opt/vtik/vtik-telegram -d use_openssl
 RUN rm -rf /opt/vtik/VTik
 
 ENTRYPOINT /opt/vtik/vtik-telegram

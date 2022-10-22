@@ -24,7 +24,7 @@ pub fn tiktok(str_tag string, str_url string, is_shortened bool) !(string, strin
 	}
 
 	str_tokens := str_base_url.split('/')
-	aweme_id := str_tokens[5].split('!')[0]
+	aweme_id := str_tokens[5].split('?')[0]
 
 	openudid := rand.string_from_set('0123456789abcdef', 16)
 	uuid := rand.string_from_set('0123456789abcdef', 16)

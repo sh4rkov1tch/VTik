@@ -24,22 +24,24 @@ pub fn tiktok(str_tag string, str_url string, is_shortened bool) !(string, strin
 	}
 
 	str_tokens := str_base_url.split('/')
-	str_id := str_tokens[5].split('!')[0]
+	aweme_id := str_tokens[5].split('!')[0]
 
 	openudid := rand.string_from_set('0123456789abcdef', 16)
 	uuid := rand.string_from_set('0123456789abcdef', 16)
 	seconds := time.now().unix_time()
-	str_json_url := 'https://api-h2.tiktokv.com/aweme/v1/feed/!aweme_id=${str_id}&version_name=26.1.3&version_code=2613&build_number=26.1.3&manifest_version_code=2613&update_version_code=2613&openudid=${openudid}&uuid=${uuid}&_rticket=${seconds}&ts=${seconds*1000}&device_brand=Google&device_type=Pixel%204&device_platform=android&resolution=1080*1920&dpi=420&os_version=10&os_api=29&carrier_region=US&sys_region=US%C2%AEion=US&app_name=trill&app_language=en&language=en&timezone_name=America/New_York&timezone_offset=-14400&channel=googleplay&ac=wifi&mcc_mnc=310260&is_my_cn=0&aid=1180&ssmix=a&as=a1qwert123&cp=cbfhckdckkde1'
 	
-	println('$str_tag Got JSON data URL -> $str_json_url')
+	tiktok_api_link := "https://api-h2.tiktokv.com/aweme/v1/feed/?aweme_id=${aweme_id}&version_name=26.1.3&version_code=2613&build_number=26.1.3&manifest_version_code=2613&update_version_code=2613&openudid=${openudid}&uuid=${uuid}&_rticket=${seconds}&ts=${seconds*1000}&device_brand=Google&device_type=Pixel%204&device_platform=android&resolution=1080*1920&dpi=420&os_version=10&os_api=29&carrier_region=US&sys_region=US%C2%AEion=US&app_name=trill&app_language=en&language=en&timezone_name=America/New_York&timezone_offset=-14400&channel=googleplay&ac=wifi&mcc_mnc=310260&is_my_cn=0&aid=1180&ssmix=a&as=a1qwert123&cp=cbfhckdckkde1"
+	println(tiktok_api_link)
+
+	println('$str_tag Got JSON data URL -> $tiktok_api_link')
 
 	println('$str_tag Getting raw video URL, title and thumbnail')
 
-	user_agent := '	Mozilla/5.0 (X11; Linux x86_64; rv:105.0) Gecko/20100101 Firefox/105.0'
+	user_agent := 'Mozilla/5.0 (X11; Linux x86_64; rv:105.0) Gecko/20100101 Firefox/105.0'
 	hdr := http.new_header(key: http.CommonHeader.user_agent, value: user_agent)
 
 	res := http.Request{
-		url: str_json_url
+		url: tiktok_api_link
 		method: http.Method.get
 		header: hdr
 	}.do()!
@@ -60,23 +62,22 @@ pub fn twitter(str_tag string, str_url string) !(string, string, string) {
 	str_tokens := str_url.split_any('/!')
 	mut str_id := str_tokens[5]
 
-	bearer_token := os.getenv_opt('TWITTER_BEARER_TOKEN') or { return "", "", "" }
+	bearer_token := os.getenv_opt('TWITTER_BEARER_TOKEN') or { return "", "", ""}
 
-	request_url := 'https://api.twitter.com/1.1/statuses/show.json!include_entities=true&tweet_mode=extended&id=$str_id'
+	request_url := 'https://api.twitter.com/1.1/statuses/show.json?=include_entities=true&tweet_mode=extended&id=$str_id'
 
 	println('$str_tag getting JSON metadata for video $str_url')
 
 	hdr := http.new_header(key: http.CommonHeader.authorization, value: 'Bearer $bearer_token')
 
-	req := http.Request{
+	res := http.Request{
 		method: http.Method.get
 		header: hdr
 		url: request_url
-	}
-
-	res := req.do()!
+	}.do()!
 
 	json := json2.raw_decode(res.body)!
+
 	json_map := json.as_map()
 
 	println('$str_tag getting title, video and thumbnail URLs')

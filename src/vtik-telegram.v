@@ -34,7 +34,7 @@ fn main() {
 					)
 				}
 
-				if vtik.check_url(update.message.text)? != 'invalid' {
+				if vtik.check_url(update.message.text)! != 'invalid' {
 					bot.send_chat_action(
 						chat_id: update.message.from.id.str()
 						action: 'typing'

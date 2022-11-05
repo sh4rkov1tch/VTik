@@ -15,16 +15,13 @@ RUN apk --no-cache add \
 
 COPY --from=builder /opt/vlang /opt/vlang
 
-RUN v install dariotarantini.vgram
-
-ENV TELEGRAM_TOKEN=""
 ENV TWITTER_BEARER_TOKEN=""
 
 WORKDIR /opt/vtik
 
 RUN git clone https://github.com/Sharqo78/VTik
 RUN v up
-RUN v -prod /opt/vtik/VTik/src/vtik-telegram.v -o /opt/vtik/vtik-telegram 
+RUN v -prod /opt/vtik/VTik/src/vtik-web.v -o /opt/vtik/vtik-web 
 RUN rm -rf /opt/vtik/VTik
 
-ENTRYPOINT /opt/vtik/vtik-telegram
+ENTRYPOINT /opt/vtik/vtik-web

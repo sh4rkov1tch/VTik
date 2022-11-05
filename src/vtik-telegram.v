@@ -6,7 +6,7 @@ import os
 
 fn main() {
 	str_token := os.getenv_opt('TELEGRAM_TOKEN') or {
-		eprintln('[VTik] Error: $err')
+		eprintln('[VTik] Error: {err}')
 		println("Couldn't find Telegram Bot Token in env")
 		return
 	}
@@ -42,14 +42,14 @@ fn main() {
 
 					vt.set_base_url(update.message.text) or {
 						eprintln(err)
-						bot.send_message(chat_id: update.message.from.id.str(), text: 'Error: $err')
+						bot.send_message(chat_id: update.message.from.id.str(), text: 'Error: {err}')
 						has_errored = true
 					}
 
 					if has_errored == false {
 						bot.send_message(
 							chat_id: update.message.from.id.str()
-							text: 'Your video is ready!\nTitle: [$vt.get_video_title()]\n$vt.get_video_url()'
+							text: 'Your video is ready!\nTitle: [{vt.get_video_title()}]\n{vt.get_video_url()}'
 						)
 					} else {
 						has_errored = false

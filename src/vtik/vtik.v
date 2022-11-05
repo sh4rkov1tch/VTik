@@ -48,7 +48,7 @@ pub fn (vtik VTik) get_thumbnail_as_bytes() ![]u8 {
 	return res.body.bytes()
 }
 
-pub fn (vtik VTik) download_video(path string) ! {
+pub fn (vtik VTik) download_video(path string) !string {
 	path_corrected := if path.ends_with('/') {
 		path
 	} else {
@@ -69,9 +69,10 @@ pub fn (vtik VTik) download_video(path string) ! {
 	video_file.close()
 
 	println('$vtik.m_str_tag Video downloaded! ${megabytes_written:.2f} MB written')
+	return complete_path
 }
 
-pub fn (vtik VTik) save_thumbnail(path string) ! {
+pub fn (vtik VTik) save_thumbnail(path string) !string {
 	path_corrected := if path.ends_with('/') {
 		path
 	} else {
@@ -86,6 +87,8 @@ pub fn (vtik VTik) save_thumbnail(path string) ! {
 	os.write_file_array(complete_path, thumbnail)!
 
 	println('$vtik.m_str_tag Thumbnail saved!')
+	
+	return complete_path
 }
 
 pub fn check_url(str_url string) !string {
@@ -112,4 +115,8 @@ pub fn (vtik VTik) get_video_url() string {
 
 pub fn (vtik VTik) get_video_title() string {
 	return vtik.m_str_title
+}
+
+pub fn (v VTik) get_thumb_url() string {
+	return v.m_str_thumb_url
 }

@@ -68,7 +68,7 @@ pub fn (vtik VTik) download_video(path string) ! {
 
 	video_file.close()
 
-	println('$vtik.m_str_tag Video downloaded! {megabytes_written:.2f} MB written')
+	println('$vtik.m_str_tag Video downloaded! ${megabytes_written:.2f} MB written')
 }
 
 pub fn (vtik VTik) save_thumbnail(path string) ! {

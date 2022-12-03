@@ -63,9 +63,9 @@ pub fn twitter(str_tag string, str_url string) !(string, string, string) {
 
 	request_url := 'https://api.twitter.com/1.1/statuses/show.json?=include_entities=true&tweet_mode=extended&id=$str_id'
 
-	println('$str_tag getting JSON metadata for video {str_url}')
+	println('$str_tag getting JSON metadata for video ${str_url}')
 
-	hdr := http.new_header(key: http.CommonHeader.authorization, value: 'Bearer {bearer_token}')
+	hdr := http.new_header(key: http.CommonHeader.authorization, value: 'Bearer ${bearer_token}')
 
 	res := http.Request{
 		method: http.Method.get

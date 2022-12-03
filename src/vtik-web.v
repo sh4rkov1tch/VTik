@@ -24,14 +24,14 @@ fn new_app() &App {
 pub fn (mut app App) get_video() !vweb.Result {
 	// Will use the link field in query
 	create_temp_folder() or {
-		return app.text('{err}')
+		return app.text('${err}')
 	}
 
 	mut v := vtik.new()
 	video_link := app.query['link']
 
 	v.set_base_url(video_link) or {
-		return app.json({'error': '{err}'})
+		return app.json({'error': '${err}'})
 	}
 
 	path := v.download_video('/tmp/vtik')!
@@ -43,14 +43,14 @@ pub fn (mut app App) get_video() !vweb.Result {
 pub fn (mut app App) get_thumb() !vweb.Result {
 	// Will use the link field in query
 	create_temp_folder() or {
-		return app.text('{err}')
+		return app.text('${err}')
 	}
 
 	mut v := vtik.new()
 	video_link := app.query['link']
 
 	v.set_base_url(video_link) or {
-		return app.json({'error': '{err}'})
+		return app.json({'error': '${err}'})
 	}
 
 	path := v.save_thumbnail('/tmp/vtik')!

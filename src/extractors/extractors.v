@@ -5,7 +5,7 @@ import x.json2
 import os
 
 import rand
-import time
+import math
 // Since TikTok restricted access to the old endpoint, I'll just use another one but it's looong as hell
 
 // Return: Video Title, Video URL, Thumbnail URL
@@ -25,18 +25,16 @@ pub fn tiktok(str_tag string, str_url string, is_shortened bool) !(string, strin
 
 	str_tokens := str_base_url.split('/')
 	aweme_id := str_tokens[5].split('?')[0]
-
-	openudid := rand.string_from_set('0123456789abcdef', 16)
-	uuid := rand.string_from_set('0123456789abcdef', 16)
-	seconds := time.now().unix_time()
+	println(aweme_id)
+	device_id := rand.i64_in_range(math.powi(10, 3), 9 * math.powi(10, 10))!
 	
-	tiktok_api_link := "https://api-h2.tiktokv.com/aweme/v1/feed/?aweme_id={aweme_id}&version_name=26.1.3&version_code=2613&build_number=26.1.3&manifest_version_code=2613&update_version_code=2613&openudid={openudid}&uuid={uuid}&_rticket={seconds}&ts={seconds*1000}&device_brand=Google&device_type=Pixel%204&device_platform=android&resolution=1080*1920&dpi=420&os_version=10&os_api=29&carrier_region=US&sys_region=US%C2%AEion=US&app_name=trill&app_language=en&language=en&timezone_name=America/New_York&timezone_offset=-14400&channel=googleplay&ac=wifi&mcc_mnc=310260&is_my_cn=0&aid=1180&ssmix=a&as=a1qwert123&cp=cbfhckdckkde1"
+	tiktok_api_link := 'https://api.tiktokv.com/aweme/v1/feed/?aweme_id=${aweme_id}&iid=6165993682518218889&device_id=${device_id}&aid=1180'
+	println('${str_tag} Got JSON data URL -> ${tiktok_api_link}')
 
-	println('{str_tag} Got JSON data URL -> {tiktok_api_link}')
+	println('${str_tag} Getting raw video URL, title and thumbnail')
 
-	println('{str_tag} Getting raw video URL, title and thumbnail')
+	user_agent := 'com.ss.android.ugc.trill/494+Mozilla/5.0+(Linux;+Android+12;+2112123G+Build/SKQ1.211006.001;+wv)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Version/4.0+Chrome/107.0.5304.105+Mobile+Safari/537.36'
 
-	user_agent := 'Mozilla/5.0 (X11; Linux x86_64; rv:105.0) Gecko/20100101 Firefox/105.0'
 	hdr := http.new_header(key: http.CommonHeader.user_agent, value: user_agent)
 
 	res := http.Request{
@@ -50,9 +48,9 @@ pub fn tiktok(str_tag string, str_url string, is_shortened bool) !(string, strin
 	video_json := json2.raw_decode(str_raw_json)!
 	video_map := video_json.as_map()
 
-	str_video_url := video_map['aweme_list']!.as_map()['0']!.as_map()['video']!.as_map()['play_addr']!.as_map()['url_list']!.as_map()['0']!.str()
-	str_title := video_map['aweme_list']!.as_map()['0']!.as_map()['desc']!.str()
-	str_thumb_url := video_map['aweme_list']!.as_map()['0']!.as_map()['video']!.as_map()['cover']!.as_map()['url_list']!.as_map()['0']!.str()
+	str_video_url := video_map['aweme_list']!.arr()[0]!.as_map()['video']!.as_map()['play_addr']!.as_map()['url_list']!.arr()[0]!.str()
+	str_title := video_map['aweme_list']!.arr()[0]!.as_map()['desc']!.str()
+	str_thumb_url := video_map['aweme_list']!.arr()[0]!.as_map()['video']!.as_map()['cover']!.as_map()['url_list']!.arr()[0]!.str()
 
 	return str_title, str_video_url, str_thumb_url
 }

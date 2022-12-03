@@ -55,7 +55,7 @@ pub fn (vtik VTik) download_video(path string) !string {
 		path + '/'
 	}
 
-	complete_path := '$path_corrected[vtik] {vtik.m_str_title}.mp4'
+	complete_path := '$path_corrected[vtik] ${vtik.m_str_title}.mp4'
 
 	println('$vtik.m_str_tag Downloading video @ $complete_path')
 
@@ -79,7 +79,7 @@ pub fn (vtik VTik) save_thumbnail(path string) !string {
 		path + '/'
 	}
 
-	complete_path := '$path_corrected{vtik.m_str_title}.jpg'
+	complete_path := '$path_corrected${vtik.m_str_title}.jpg'
 
 	println('$vtik.m_str_tag Saving thumbnail @ $complete_path')
 
